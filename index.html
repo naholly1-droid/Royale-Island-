@@ -527,7 +527,7 @@ addEventListener('keydown',e=>{if(e.target.tagName==='INPUT'||e.target.tagName==
  if(WH.open&&e.code.startsWith('Digit')){const i=+e.code[5]-1;if(i>=0&&i<8){closeW();startEmote(P,WMAP[i])}return}if(e.code==='KeyT')setTod();if(e.code==='KeyB'&&!e.repeat&&!paused&&P.alive&&!P.car&&P.st==='ground')openW();if(CRE){if(e.code==='KeyC')evStart();if(e.code==='KeyF')P.fly=!P.fly;if(e.code==='KeyV')ROT^=1;if(e.code==='KeyX')undo();if(e.code==='KeyN')CI=(CI+1)%PAL.length}if(e.code==='KeyR'&&P.st==='ground')reload(P);if(e.code==='KeyE'&&!(DUO&&revT())){if(P.car)leaveCar();else{const c=carNear(P.pos);if(c)takeCar(c);else if(pickItem()){}else if(P.nc&&!P.nc.open)loot(P,P.nc)}}
  if(e.code.startsWith('Digit')){const i=+e.code[5]-1;if(CRE){if(PCS[i])SEL=i}else if(i>=0&&i<5&&P.has[i]){P.wi=i;P.rel=0}}});
 addEventListener('keyup',e=>{K[e.code]=false;if(e.code==='KeyB'&&WH.open){closeW();if(WH.sel>=0&&P.alive)startEmote(P,WMAP[WH.sel])}});
-addEventListener('mousedown',e=>{if(!running||paused)return;if(CRE){if(e.button===0)place();if(e.button===2)erase();return}if(e.button===0)mouseD=true;if(e.button===2)ads=true});
+addEventListener('mousedown',e=>{if(!running)return;if(document.pointerLockElement!==$('c')){lockP();return;}if(paused)return;if(CRE){if(e.button===0)place();if(e.button===2)erase();return}if(e.button===0)mouseD=true;if(e.button===2)ads=true});
 addEventListener('mouseup',e=>{if(e.button===0)mouseD=false;if(e.button===2)ads=false});addEventListener('contextmenu',e=>e.preventDefault());
 addEventListener('mousemove',e=>{if(!running||paused||document.pointerLockElement!==$('c'))return;lastMouse=performance.now();if(WH.open){WH.x=Math.max(-140,Math.min(140,WH.x+e.movementX));WH.y=Math.max(-140,Math.min(140,WH.y+e.movementY));WH.sel=Math.hypot(WH.x,WH.y)>45?(Math.round(Math.atan2(WH.x,-WH.y)/(Math.PI/4))+8)%8:-1;wUpd();return}yaw-=e.movementX*.0022*S.sens*(ads?.6:1);pitch=Math.max(-1.3,Math.min(1.3,pitch-e.movementY*.0022*S.sens*(ads?.6:1)))});
 document.addEventListener('pointerlockchange',()=>{if(!running)return;paused=document.pointerLockElement!==$('c');if(paused)closeW();$('pause').classList.toggle('hide',!paused);$('cbtn').classList.toggle('hide',!(CRE&&paused));if(paused){mouseD=false;for(const k in K)K[k]=false}});
@@ -538,4 +538,3 @@ $('bChar').onclick=()=>show('char');$('bSet').onclick=()=>show('set');$('bCmd').
 $('sSens').oninput=e=>S.sens=+e.target.value;$('sFov').oninput=e=>S.fov=+e.target.value;$('sSh').onchange=e=>{ren.shadowMap.enabled=e.target.checked;sun.castShadow=e.target.checked;scene.traverse(o=>{if(o.material)o.material.needsUpdate=true})};
 setPrev();show('main');requestAnimationFrame(loop);
 </script></body></html>
-
